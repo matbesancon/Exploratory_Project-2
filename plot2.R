@@ -1,0 +1,8 @@
+part_data=readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+balti_data<-subset(part_data,fips=="24510")
+agg_balti<-aggregate(balti_data$Emissions,list(balti_data$year),FUN=sum)
+png(filename='plot2.png')
+plot(agg_balti$Group.1,agg_balti$x,main="Particle emissions in Baltimore",xlab="Year",ylab="Particle emission (T)",pch="+")
+lines(agg_balti$Group.1,agg_balti$x,col="purple")
+dev.off()
