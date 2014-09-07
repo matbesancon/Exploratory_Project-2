@@ -1,0 +1,7 @@
+part_data=readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+agg_part<-aggregate(part_data$Emissions,list(part_data$year),FUN=sum)
+png(filename='plot1.png')
+plot(agg_part$Group.1,agg_part$x,main="Particle emissions in the US",xlab="Year",ylab="Particle emission (T)")
+lines(agg_part$Group.1,agg_part$x,col="blue")
+dev.off()
