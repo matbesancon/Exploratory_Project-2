@@ -57,15 +57,15 @@ agg_non_point<-aggregate(sub_non_point$Emissions,list(sub_non_point$year),FUN=su
 agg_onroad<-aggregate(sub_onroad$Emissions,list(sub_onroad$year),FUN=sum)
 agg_non_road<-aggregate(sub_non_road$Emissions,list(sub_non_road$year),FUN=sum)
 
-plot_point<-qplot(Group.1,x,main="Particle emissions for Point",data=agg_point,xlab="Year",ylab="Particle emissions (T)",geom=c("point","line")) +geom_line()
-plot_non_point<-qplot(Group.1,x,main="Particle emissions for Non-Point",data=agg_non_point,xlab="Year",ylab="Particle emissions (T)",geom=c("point","line"))+geom_line()
-plot_onroad<-qplot(Group.1,x,main="Particle emissions for On-Road",data=agg_onroad,xlab="Year",ylab="Particle emissions (T)",geom=c("point","line"))+geom_line()
-plot_non_road<-qplot(Group.1,x,main="Particle emissions for Point",data=agg_non_road,xlab="Year",ylab="Particle emissions (T)",geom=c("point","line"))+geom_line()
+plot_point<-qplot(Group.1,x,main="Particle emissions for Point",data=agg_point,xlab="Year",ylab="Particle emissions (T)",geom=c("point")) +geom_line(colour='red')
+plot_onroad<-qplot(Group.1,x,main="Particle emissions for On-Road",data=agg_onroad,xlab="Year",ylab="Particle emissions (T)",geom=c("point"))+geom_line(colour='blue')
+plot_non_point<-qplot(Group.1,x,main="Particle emissions for Non-Point",data=agg_non_point,xlab="Year",ylab="Particle emissions (T)",geom=c("point"))+geom_line(colour='purple')
+plot_non_road<-qplot(Group.1,x,main="Particle emissions for Non-Road",data=agg_non_road,xlab="Year",ylab="Particle emissions (T)",geom=c("point"))+geom_line(colour='orange')
 
 
 #Creating a PNG file
 png(filename='plot3.png')
 # Plotting the 4 different types per year
-multiplot(plot_point,plot_non_point,plot_onroad,plot_non_road,cols=2)
+multiplot(plot_point,plot_onroad,plot_non_point,plot_non_road,cols=2)
 dev.off()
 
