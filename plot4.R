@@ -18,8 +18,13 @@ agg_coal<-aggregate(Emissions,list(year),FUN=sum)
 detach(coal_data)
 
 # Plotting the emissions
+p<-qplot(agg_coal[,1],agg_coal[,2],ylim=c(0,NA),main='Coal combustion related emissions in the US',
+xlab="Year",ylab="Particle emissions (T)",size=5)
+p<-p+geom_line(size=0.5,col="orange")
+p<-p+theme(legend.position="none")
+
 png(filename='plot4.png')
-qplot(agg_coal[,1],agg_coal[,2],ylim=c(0,NA),main='Coal combustion related emissions in the US',xlab="Year",ylab="Particle emissions (T)",size=5)+geom_line(colour='red',size=0.5)
+p
 dev.off()
 
 
