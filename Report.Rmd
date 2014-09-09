@@ -6,14 +6,15 @@ output: html_document
 ---
 
 ## Introduction
-=============
+
 
 This report aims at giving a quick overview of the particle emissions in the USA, based on the exploratory analysis of data provided by the the Environmental Protection Agency (EPA) and made publicly available. We will use data from the years 1999, 2002, 2005, and 2008.  
   
 The purpose is to put in a proper report the graphs produced for the second project of **Exploratory Data Analysis**, an online course offered by the John Hopkins University on the Coursera plateform. You can have an overview of the course [here](https://www.coursera.org/course/exdata). 
 
-## Pre-processing
-=============
+### Pre-processing
+
+
 We begin by loading the data :
 ```{r}
 part_data=readRDS("summarySCC_PM25.rds")
@@ -21,9 +22,10 @@ SCC <- readRDS("Source_Classification_Code.rds")
 ```
 We store in *part_data* the particle emissions data and in SCC the Source Classification Code of each emission type. For some of the plots, we will need the package *ggplot2*. We will also be using the function *multiplot* for this package, available [here](http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/).
 
-```{r}
+```{r,results='hide'}
 library(ggplot2)
 ```
+The function multiplot is hidden to keep the document short. You can visite the website to see the details, the code remained untouched.  
 ```{r,echo=FALSE,results='hide'}
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
         require(grid)
@@ -61,10 +63,22 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
         }
 }
 ```
-The function multiplot is hidden to keep the document short. You can visite the website to see the details, the code remained untouched.
+We can quickly look at the data to see on what exactly we are working :
+What are the attributes of the particle emissions data :
+```{r}
+names(part_data)
+```
+How big is our data set :
+```{r}
+dim(part_data)
+```
+What contains every line :
+```{r}
+part_data[1,]
+```
 
-## Plot I : Overall particle emissions in the US across the years
-=============
+### Plot I : Overall particle emissions in the US across the years
+
 First of all, we aggregate the emissions data per year.
 ```{r}
 agg_part<-aggregate(part_data$Emissions,list(part_data$year),FUN=sum)
@@ -74,5 +88,8 @@ The base plot system is used to create a simple plot of the data :
 plot(agg_part$Group.1,agg_part$x,main="Particle emissions in the US",xlab="Year",ylab="Particle emission (T)",pch='+')
 lines(agg_part$Group.1,agg_part$x,col="blue")
 ```
+  
+### Plot II : Particle emissions per year in Baltimore
+
 
 
