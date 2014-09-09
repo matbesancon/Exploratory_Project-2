@@ -1,0 +1,78 @@
+---
+title: "Exploratory Data Analysis - Particles Emission"
+author: "Mathieu Besançon"
+date: "Tuesday, September 09, 2014"
+output: html_document
+---
+
+## Introduction
+=============
+
+This report aims at giving a quick overview of the particle emissions in the USA, based on the exploratory analysis of data provided by the the Environmental Protection Agency (EPA) and made publicly available. We will use data from the years 1999, 2002, 2005, and 2008.  
+  
+The purpose is to put in a proper report the graphs produced for the second project of **Exploratory Data Analysis**, an online course offered by the John Hopkins University on the Coursera plateform. You can have an overview of the course [here](https://www.coursera.org/course/exdata). 
+
+## Pre-processing
+=============
+We begin by loading the data :
+```{r}
+part_data=readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+```
+We store in *part_data* the particle emissions data and in SCC the Source Classification Code of each emission type. For some of the plots, we will need the package *ggplot2*. We will also be using the function *multiplot* for this package, available [here](http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/).
+
+```{r}
+library(ggplot2)
+```
+```{r,echo=FALSE,results='hide'}
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+        require(grid)
+        
+        # Make a list from the ... arguments and plotlist
+        plots <- c(list(...), plotlist)
+        
+        numPlots = length(plots)
+        
+        # If layout is NULL, then use 'cols' to determine layout
+        if (is.null(layout)) {
+                # Make the panel
+                # ncol: Number of columns of plots
+                # nrow: Number of rows needed, calculated from # of cols
+                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                                 ncol = cols, nrow = ceiling(numPlots/cols))
+        }
+        
+        if (numPlots==1) {
+                print(plots[[1]])
+                
+        } else {
+                # Set up the page
+                grid.newpage()
+                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+                
+                # Make each plot, in the correct location
+                for (i in 1:numPlots) {
+                        # Get the i,j matrix positions of the regions that contain this subplot
+                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+                        
+                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                                        layout.pos.col = matchidx$col))
+                }
+        }
+}
+```
+The function multiplot is hidden to keep the document short. You can visite the website to see the details, the code remained untouched.
+
+## Plot I : Overall particle emissions in the US across the years
+=============
+First of all, we aggregate the emissions data per year.
+```{r}
+agg_part<-aggregate(part_data$Emissions,list(part_data$year),FUN=sum)
+```
+The base plot system is used to create a simple plot of the data :
+```{r}
+plot(agg_part$Group.1,agg_part$x,main="Particle emissions in the US",xlab="Year",ylab="Particle emission (T)",pch='+')
+lines(agg_part$Group.1,agg_part$x,col="blue")
+```
+
+
