@@ -1,6 +1,6 @@
 ---
 title: "Exploratory Data Analysis - Particles Emission"
-author: "Mathieu Besançon"
+author: "Mathieu BesanÃ§on"
 date: "Tuesday, September 09, 2014"
 output: html_document
 ---
@@ -90,6 +90,21 @@ lines(agg_part$Group.1,agg_part$x,col="blue")
 ```
   
 ### Plot II : Particle emissions per year in Baltimore
+
+Baltimore is identified by the fips code "24510". We create a subset of the data only with the corresponding fips code, 
+and aggregate the emissions per year.
+
+```{r}
+balti_data<-subset(part_data,fips=="24510") 
+4 agg_balti<-aggregate(balti_data$Emissions,list(balti_data$year),FUN=sum) 
+```
+We can then generate the plot.
+```{r}
+plot(agg_balti$Group.1,agg_balti$x,main="Particle emissions in Baltimore",xlab="Year",ylab="Particle emission (T)",pch="+") 
+lines(agg_balti$Group.1,agg_balti$x,col="purple") 
+```
+
+### Plot III : 
 
 
 
