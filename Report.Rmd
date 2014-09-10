@@ -158,6 +158,29 @@ p<-p+theme(legend.position="none")
 print(p)
 ```
 
+### Plot V : Motor vehicles emissions in Baltimore
+
+We will reuse the *balti_data* subset but this time, we extract the emissions due to motor vehicles.
+Just as we did for coal, we extract the relevant classification codes from the SCC data, and use it to subset the *balti_data*.
+We name this subset *car_data* :
+```{r}
+index_car<-which(grepl('Motor',SCC$Short.Name)==TRUE) 
+10 sub_car<-SCC[index_car,] 
+
+car_data<-balti_data[which(balti_data$SCC%in%sub_car$SCC),]
+```
+As usual, we aggregate our data per year into *agg_car* and plot the result. We use this time 
+the bar plot from the base plotting system for this purpose :
+
+```{r}
+attach(car_data) 
+agg_car<-aggregate(Emissions,list(year),FUN=sum) 
+detach(car_data) 
+
+barplot(agg_car[,2],names.arg=(agg_car[,1]),xlab='Year',ylab='Emissions (T)',main='Particle Emissions from motor vehicles in Baltimore') 
+```
+
+
 
 
 
