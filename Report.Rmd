@@ -1,6 +1,6 @@
 ---
 title: "Exploratory Data Analysis - Particles Emission"
-author: "Mathieu Besançon"
+author: "Mathieu Besancon"
 date: "Tuesday, September 09, 2014"
 output: html_document
 ---
@@ -146,11 +146,12 @@ coal_data<-part_data[which(part_data$SCC%in%sub_coal$SCC),]
 ```
 
 The *coal_data* subset can then be aggregated per year as done before, and the plot can be generated.
-```{r}
+```{r,echo=FALSE}
 attach(coal_data) 
 agg_coal<-aggregate(Emissions,list(year),FUN=sum) 
 detach(coal_data) 
-
+```
+```{r}
 p<-qplot(agg_coal[,1],agg_coal[,2],ylim=c(0,NA),main='Coal combustion related emissions in the US', 
 xlab="Year",ylab="Particle emissions (T)",size=5) 
 p<-p+geom_line(size=0.5,col="orange") 
@@ -172,11 +173,12 @@ car_data1<-balti_data[which(balti_data$SCC%in%sub_car$SCC),]
 As usual, we aggregate our data per year into *agg_car* and plot the result. We use this time 
 the bar plot from the base plotting system for this purpose :
 
-```{r}
+```{r,echo=FALSE}
 attach(car_data1) 
 agg_car1<-aggregate(Emissions,list(year),FUN=sum) 
 detach(car_data1) 
-
+```
+```{r}
 barplot(agg_car1[,2],names.arg=(agg_car1[,1]),xlab='Year',ylab='Emissions (T)',
 main='Particle Emissions from motor vehicles in Baltimore') 
 ```
