@@ -2,7 +2,7 @@
 title: "Exploratory Data Analysis - Particles Emission"
 author: "Mathieu Besancon"
 date: "Tuesday, September 09, 2014"
-output: pdf_document
+output: html_document
 ---
 
 ## Introduction
@@ -12,12 +12,12 @@ library(jpeg)
 library(grid)
 img<-readJPEG('traffic.jpg')
 ```
-Image source [here](http://www.autoevolution.com/news/how-to-avoid-city-traffic-jams-35319.html).  
 
 This report aims at giving a quick overview of the particle emissions in the USA, based on the exploratory analysis of data provided by the the Environmental Protection Agency (EPA) and made publicly available. We will use data from the years 1999, 2002, 2005, and 2008.  
 ```{r,results='hide'}
 grid.raster(img)
 ```
+Image source [here](http://www.autoevolution.com/news/how-to-avoid-city-traffic-jams-35319.html).  
 
 The purpose is to put in a proper report the graphs produced for the second project of *Exploratory Data Analysis*, an online course offered by the John Hopkins University on the Coursera plateform. You can have an overview of the course [here](https://www.coursera.org/course/exdata). 
 
