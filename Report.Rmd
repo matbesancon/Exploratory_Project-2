@@ -2,7 +2,7 @@
 title: "Exploratory Data Analysis - Particles Emission"
 author: "Mathieu Besancon"
 date: "Tuesday, September 09, 2014"
-output: html_document
+output: pdf_document
 ---
 
 ## Introduction
