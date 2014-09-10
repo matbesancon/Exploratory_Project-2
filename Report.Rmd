@@ -96,7 +96,7 @@ and aggregate the emissions per year.
 
 ```{r}
 balti_data<-subset(part_data,fips=="24510") 
-4 agg_balti<-aggregate(balti_data$Emissions,list(balti_data$year),FUN=sum) 
+agg_balti<-aggregate(balti_data$Emissions,list(balti_data$year),FUN=sum) 
 ```
 We can then generate the plot.
 ```{r}
@@ -162,25 +162,56 @@ print(p)
 
 We will reuse the *balti_data* subset but this time, we extract the emissions due to motor vehicles.
 Just as we did for coal, we extract the relevant classification codes from the SCC data, and use it to subset the *balti_data*.
-We name this subset *car_data* :
+We name this subset *car_data1* :
 ```{r}
 index_car<-which(grepl('Motor',SCC$Short.Name)==TRUE) 
-10 sub_car<-SCC[index_car,] 
+sub_car<-SCC[index_car,] 
 
-car_data<-balti_data[which(balti_data$SCC%in%sub_car$SCC),]
+car_data1<-balti_data[which(balti_data$SCC%in%sub_car$SCC),]
 ```
 As usual, we aggregate our data per year into *agg_car* and plot the result. We use this time 
 the bar plot from the base plotting system for this purpose :
 
 ```{r}
-attach(car_data) 
-agg_car<-aggregate(Emissions,list(year),FUN=sum) 
-detach(car_data) 
+attach(car_data1) 
+agg_car1<-aggregate(Emissions,list(year),FUN=sum) 
+detach(car_data1) 
 
-barplot(agg_car[,2],names.arg=(agg_car[,1]),xlab='Year',ylab='Emissions (T)',main='Particle Emissions from motor vehicles in Baltimore') 
+barplot(agg_car1[,2],names.arg=(agg_car1[,1]),xlab='Year',ylab='Emissions (T)',
+main='Particle Emissions from motor vehicles in Baltimore') 
+```
+### Plot VI : Comparing motor vehicles emissions from Baltimore and Los Angeles County
+
+We would like to discover which of these two cities had the greater change in particle emissions related to motor vehicles.
+
+We extract the emissions data from the two cities, for which we know the fips code, respectively 24510 und 06037.
+```{r}
+two_cities_data<-subset(part_data,(fips=="24510")|(fips=="06037"))
+```
+We create the subset *car_data* from the *two_cities_data* with only the relevant 
+emissions records, and aggregate it in *agg_car*.
+We create a new attribute in this subset, **City**, which contains the string "Log Angeles" or "Baltimore", depending 
+on the fips code.
+
+```{r}
+car_data<-two_cities_data[which(two_cities_data$SCC%in%sub_car$SCC),] 
+agg_car<-aggregate(Emissions~year+fips,data=car_data,FUN=sum) 
+agg_car$City<-NA 
+for (i in 1:length(agg_car[,1])){ 
+     if (agg_car[i,2]=="24510"){ 
+           agg_car[i,4]<-"Baltimore" 
+     }else{agg_car[i,4]<-"Los Angeles"} 
+}  
 ```
 
-
+We can now plot the two variations of emissions per year on two different graphs using ggplot and the *facet_grid* function.
+```{r}
+p<-ggplot(data=agg_car,aes(year,Emissions,colour=factor(City))) 
+p<-p+geom_point(size=4,shape=7) 
+p<-p+geom_line(size=0.8) 
+p<-p+facet_grid(fips~.,scales="free_y") 
+print(p)
+```{r}
 
 
 
