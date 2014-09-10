@@ -104,7 +104,33 @@ plot(agg_balti$Group.1,agg_balti$x,main="Particle emissions in Baltimore",xlab="
 lines(agg_balti$Group.1,agg_balti$x,col="purple") 
 ```
 
-### Plot III : 
+### Plot III : Emissions per type in Baltimore across years
+
+Firstly, we each type from the Baltimore data we created for Plot 2.
+```{r}
+sub_point<-subset(balti_data,type=='POINT') 
+sub_non_point<-subset(balti_data,type=='NONPOINT') 
+sub_onroad<-subset(balti_data,type=='ON-ROAD') 
+sub_non_road<-subset(balti_data,type=='NON-ROAD') 
+ ```
+ The data of each type are aggregated per year : 
+```{r}
+agg_point<-aggregate(sub_point$Emissions,list(sub_point$year),FUN=sum) 
+agg_non_point<-aggregate(sub_non_point$Emissions,list(sub_non_point$year),FUN=sum) 
+agg_onroad<-aggregate(sub_onroad$Emissions,list(sub_onroad$year),FUN=sum) 
+agg_non_road<-aggregate(sub_non_road$Emissions,list(sub_non_road$year),FUN=sum) 
+```
+In order to display all the plot at once, we store them in objects, 
+and call the multiplot function with these objects as arguments.
+
+```{r}
+plot_point<-qplot(Group.1,x,main="Particle emissions for Point",data=agg_point,xlab="Year",ylab="Particle emissions (T)",geom=c("point")) +geom_line(colour='red') 
+plot_onroad<-qplot(Group.1,x,main="Particle emissions for On-Road",data=agg_onroad,xlab="Year",ylab="Particle emissions (T)",geom=c("point"))+geom_line(colour='blue') 
+plot_non_point<-qplot(Group.1,x,main="Particle emissions for Non-Point",data=agg_non_point,xlab="Year",ylab="Particle emissions (T)",geom=c("point"))+geom_line(colour='purple') 
+plot_non_road<-qplot(Group.1,x,main="Particle emissions for Non-Road",data=agg_non_road,xlab="Year",ylab="Particle emissions (T)",geom=c("point"))+geom_line(colour='orange') 
+ 
+multiplot(plot_point,plot_onroad,plot_non_point,plot_non_road,cols=2)
+```
 
 
 
